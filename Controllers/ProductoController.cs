@@ -1,30 +1,36 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TechStore.Models;
+
 namespace TechStore.Controllers
 {
     public class ProductoController : Controller
     {
+        private readonly ILogger<ProductoController> _logger;
+         public ProductoController(ILogger<ProductoController> logger)
+    {
+        _logger = logger;
+    }
         public IActionResult Index()
-        {
-            return View();
-        }
-             public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Precio,Descripcion,Igv")] Producto producto)
+        public IActionResult Crear(Producto producto)
         {
             if (ModelState.IsValid)
             {
-
-                return RedirectToAction(nameof(Index));
+               
+                return View("index");
             }
+
             return View(producto);
         }
-
-    
+         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View("Error!");
+        }
     }
 }
